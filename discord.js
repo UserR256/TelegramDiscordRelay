@@ -31,7 +31,7 @@ telegramBot.on(['text', 'photo', ], async (ctx) => {
               const response = await fetch(photoUrl);
               const buffer = await response.buffer();
                 try {
-                      const message = await discordChannel.send(`${ctx.from.first_name} sent a photo:`, { files: [{ attachment: buffer, name: 'photo.jpg' }] });
+                      const message = await discordChannel.send(`${ctx.from.first_name} sent a photo:`, { files: [{ attachment: buffer, name: 'image' }] });
                       console.log(`Message sent to Discord: ${message.id}`);
                       } catch (error) {
                       console.error(`Failed to send photo to Discord: ${error.message}`);
