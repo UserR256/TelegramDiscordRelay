@@ -25,20 +25,20 @@ telegramBot.on(['text', 'photo', ], async (ctx) => {
               // Telegram sends photos in different sizes. We'll use the largest one.
               const photo = ctx.message.photo[ctx.message.photo.length - 1];
               const photoInfo = await ctx.telegram.getFile(photo.file_id);
-//              console.log(`Photo info: ${JSON.stringify(photoInfo)}`);
               const photoUrl = `https://api.telegram.org/file/bot${process.env.TELEGRAM_BOT_TOKEN}/${photoInfo.file_path.toString()}`;
-//              console.log(`Photo URL: ${photoUrl}`);
-              const response = await fetch(photoUrl);
-              const buffer = await response.buffer();
+                  // Use the photo's caption if it exists, otherwise use a default message
+                const caption = ctx.message.caption ? ctx.message.caption : `${ctx.from.first_name}:`;
                 try {
-                      const message = await discordChannel.send(`${ctx.from.first_name} sent a photo:`, { files: [{ attachment: buffer, name: 'image' }] });
-                      console.log(`Message sent to Discord: ${message.id}`);
-                      } catch (error) {
-                      console.error(`Failed to send photo to Discord: ${error.message}`);
-                          }
+                const embed = new MessageEmbed()
+                .setImage(photoUrl)
+                .setFooter(caption);
+                const message = await discordChannel.send({ embeds: [embed] });
+                console.log(`Message sent to Discord: ${message.id}`);
+                } catch (error) {
+                console.error(`Failed to send photo to Discord: ${error.message}`);
+            }
           }
       }
   }
 });
-
 telegramBot.launch();
