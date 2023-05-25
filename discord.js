@@ -1,7 +1,6 @@
 require('dotenv').config();
 const Discord = require('discord.js');
 const Telegraf = require('telegraf');
-const fetch = require('node-fetch');
 
 const discordClient = new Discord.Client({
     intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES]
