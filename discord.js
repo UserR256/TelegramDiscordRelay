@@ -35,7 +35,7 @@ telegramBot.on(['text', 'photo', ], async (ctx) => {
                   try {
                       const embed = new MessageEmbed()
                           .setImage(photoUrl)
-                          .setFooter( caption);
+                          .setFooter({ text: caption});
                       const message = await discordChannel.send({ embeds: [embed] });
   //                    await discordChannel.send(caption); // if you comment this then uncommant .setFooter
                       console.log(`Message sent to Discord: ${message.id}`);
