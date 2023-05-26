@@ -26,18 +26,23 @@ telegramBot.on(['text', 'photo', ], async (ctx) => {
               const photoInfo = await ctx.telegram.getFile(photo.file_id);
               const photoUrl = `https://api.telegram.org/file/bot${process.env.TELEGRAM_BOT_TOKEN}/${photoInfo.file_path.toString()}`;
                   // Use the photo's caption if it exists, otherwise use a default message
-                const caption = ctx.message.caption ? ctx.message.caption : `${ctx.from.first_name}:`;
-                try {
-                const embed = new MessageEmbed()
-                .setImage(photoUrl)
-                .setFooter(caption);
-                const message = await discordChannel.send({ embeds: [embed] });
-                console.log(`Message sent to Discord: ${message.id}`);
-                } catch (error) {
-                console.error(`Failed to send photo to Discord: ${error.message}`);
+                  let caption = ctx.message.caption ? ctx.message.caption : `${ctx.from.first_name}:`;
+                  // caption = caption.replace(/(https?:\/\/[^\s]+)/g, '[$1]($1)'); // Not working atm
+                  if (caption.length > 2000) {
+                  caption = caption.substring(0, 1997) + '...';
+                  }
+                  try {
+                      const embed = new MessageEmbed()
+                          .setImage(photoUrl)
+                          .setFooter( caption);
+                      const message = await discordChannel.send({ embeds: [embed] });
+  //                    await discordChannel.send(caption); // if you comment this then uncommant .setFooter
+                      console.log(`Message sent to Discord: ${message.id}`);
+                  } catch (error) {
+                      console.error(`Failed to send photo to Discord: ${error.message}`);
+                }
             }
-          }
-      }
-  }
+        }
+    }
 });
-telegramBot.launch();
+telegramBot.launch().catch(error => console.error(`Failed to launch Telegram bot: ${error.message}`));
