@@ -1,6 +1,7 @@
 require('dotenv').config();
 const Discord = require('discord.js');
 const Telegraf = require('telegraf');
+const { MessageEmbed } = require('discord.js');
 
 const discordClient = new Discord.Client({
     intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES]
